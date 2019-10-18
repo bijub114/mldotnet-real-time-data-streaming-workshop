@@ -15,11 +15,12 @@ variables:
   value: 'Release'
   
 steps:
+- script: 'net use X: \\mlmodelbiju.file.core.windows.net\data /u:mlmodelbiju $(filestorage.key)'
+  displayName: 'Map disk drive to Azure Files share folder'
+  
 - script: dotnet build src/machine-learning/FraudPredictionTrainer/FraudPredictionTrainer.csproj --configuration $(buildConfiguration)
   displayName: 'Build Trainer Console App (dotnet build) $(buildConfiguration)'
 
 - script: dotnet run --project src/machine-learning/FraudPredictionTrainer/FraudPredictionTrainer.csproj --configuration $(buildConfiguration)
   displayName: 'Train ML model (dotnet run)'
 
-- script: 'net use X: \\mlmodelbiju.file.core.windows.net\data /u:mlmodelbiju $(filestorage.key)'
-  displayName: 'Map disk drive to Azure Files share folder'
